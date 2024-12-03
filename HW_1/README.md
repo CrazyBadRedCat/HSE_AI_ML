@@ -14,9 +14,57 @@ uvicorn main:app --host 0.0.0.0 --port 8000
 ```
 
 Результаты работы сервиса на картинках (скрины из `docs`):
+![image_1](https://github.com/user-attachments/assets/cfc6f16c-8840-445d-b09e-85367e502c4d)
 
-![text](https://github.com/CrazyBadRedCat/HSE_AI_ML/edit/main/HW_1/images/1.jpg)
+![image_2](https://github.com/user-attachments/assets/dcd9b2f1-b483-47a1-ad63-78231af7f7d8)
 
-![text](https://github.com/CrazyBadRedCat/HSE_AI_ML/edit/main/HW_1/images/2.jpg)
+![image_3](https://github.com/user-attachments/assets/588aa34f-9b36-475b-a5b3-8eb8a767fbe1)
 
-![text](https://github.com/CrazyBadRedCat/HSE_AI_ML/edit/main/HW_1/images/3.jpg)
+Меетрик в процессе обучения были следующие:
+1. Model 1 on train
+   MSE: 116890171494.95557
+   R2: 0.5922032894671243
+   
+   Model 1 on test
+   MSE: 233356469188.1284
+   R2: 0.5940416200636613
+
+2. Model 2 on train
+   MSE: 116890171494.95566
+   R2: 0.5922032894671239
+  
+   Model 2 on test
+   MSE: 233356469188.1198
+   R2: 0.5940416200636762
+
+3. Model 3 on train
+   MSE: 116890171505.06494
+   R2: 0.5922032894318554
+  
+   Model 3 on test
+   MSE: 233357137050.4171
+   R2: 0.594040458217608
+
+4. Best Lasso on train
+   MSE: 116900029470.14934
+   R2: 0.5921688977829893
+  
+   Best Lasso on test
+   MSE: 234032474561.174
+   R2: 0.5928656079007046
+
+5. Best ElasticNet on train
+   MSE: 116905570331.31075
+   R2: 0.592149567287309
+  
+   Best ElasticNet on test
+   MSE: 234619164886.47186
+   R2: 0.5918449725833687
+
+6. Best Ridge on train
+   MSE: 65874498824.36313
+   R2: 0.7701825261695644
+  
+   Best Ridge on test
+   MSE: 130663650498.15652
+   R2: 0.7726910933416792
