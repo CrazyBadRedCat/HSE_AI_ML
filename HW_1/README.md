@@ -15,8 +15,8 @@ uvicorn main:app --host 0.0.0.0 --port 8000
 
 Результаты работы сервиса на картинках (скрины из `docs`):
 
-![text](https://github.com/CrazyBadRedCat/HSE_AI_ML/edit/main/HW_1/images/image_1.png)
+![text](https://github.com/CrazyBadRedCat/HSE_AI_ML/edit/main/HW_1/images/1.jpg)
 
-![text](https://github.com/CrazyBadRedCat/HSE_AI_ML/edit/main/HW_1/images/image_2.png)
+![text](https://github.com/CrazyBadRedCat/HSE_AI_ML/edit/main/HW_1/images/2.jpg)
 
-![text](https://github.com/CrazyBadRedCat/HSE_AI_ML/edit/main/HW_1/images/image_3.png)
+![text](https://github.com/CrazyBadRedCat/HSE_AI_ML/edit/main/HW_1/images/3.jpg)
