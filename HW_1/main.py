@@ -1,4 +1,3 @@
-
 from fastapi import FastAPI, UploadFile, HTTPException
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
@@ -30,25 +29,65 @@ class Item(BaseModel):
 class Items(BaseModel):
     objects: List[Item]
 
-def preprocess_item(item: Item) -> dict:
+def mileage_preprocess(x):
+    if x is None:
+        return np.nan
+
+    x = str(x).replace(" kmpl", "")
+    if x.endswith("km/kg") or (x == ""):
+        return np.nan
+    else:
+        return float(x)
+
+def engine_preprocess(x):
+    if x is None:
+        return np.nan
+
+    x = str(x).replace(" CC", "")
+    if x == "":
+        return np.nan
+    else:
+        return float(x)
+
+def max_power_preprocess(x):
+    if x is None:
+        return np.nan
+    
+    x = str(x).replace(" bhp", "")
+    if x == "":
+        return np.nan
+    else:
+        return float(x)
+
+def name_preprocess(x):
+    return str(x).split()[0]
+
+def preprocess_df(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Преобразует объект Item в формат, подходящий для модели.
+    Преобразует DataFrame в формат, подходящий для модели.
     """
-    return {
-        "name": item.name,
-        "year": item.year,
-        "selling_price": item.selling_price,
-        "km_driven": item.km_driven,
-        "fuel": item.fuel,
-        "seller_type": item.seller_type,
-        "transmission": item.transmission,
-        "owner": item.owner,
-        "mileage": item.mileage,
-        "engine": item.engine,
-        "max_power": item.max_power,
-        "torque": item.torque,
-        "seats": item.seats,
-    }
+    df = df.drop(columns=["torque", "selling_price"], errors = "ignore")
+    
+    df["mileage"] = df["mileage"].apply(mileage_preprocess)
+    df["engine"] = df["engine"].apply(engine_preprocess)
+    df["max_power"] = df["max_power"].apply(max_power_preprocess)
+    df["name"] = df["name"].apply(name_preprocess)
+    
+    df = df.fillna({
+        "mileage": 19.30,
+        "engine": 1248.00,
+        "seats": 5.00,
+        "max_power": 81.86,
+    })
+    
+    df = df.astype({
+        "mileage": float,
+        "engine": int,
+        "seats": int,
+        "max_power": float,
+    })
+    
+    return df
 
 @app.post("/predict_item")
 def predict_item(item: Item) -> float:
@@ -56,7 +95,8 @@ def predict_item(item: Item) -> float:
     Предсказывает стоимость машины для одного объекта.
     """
     try:
-        data = pd.DataFrame([preprocess_item(item)])
+        data = pd.DataFrame([item.model_dump()])
+        data = preprocess_df(data)
         prediction = model.predict(data)
         return prediction[0]
     except Exception as e:
@@ -79,7 +119,7 @@ def predict_items(file: UploadFile):
         if not all(column in data.columns for column in required_columns):
             raise HTTPException(status_code=400, detail="Некорректный формат файла. Проверьте столбцы.")
 
-        predictions = model.predict(data)
+        predictions = model.predict(preprocess_df(data.copy()))
 
         data["predicted_price"] = predictions
 
